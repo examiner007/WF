@@ -1,0 +1,62 @@
+To create a Django application that displays the message "Hello, Welcome to School of Computer Science at NWC" using a template, follow these steps:
+
+1. Create a New Django Project
+Run the following commands:
+
+bash
+Copy
+Edit
+django-admin startproject school
+cd school
+python manage.py startapp welcome
+2. Update views.py in the welcome app
+In welcome/views.py:
+
+python
+Copy
+Edit
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'welcome/home.html')
+3. Create the Template
+In the welcome app, create a folder named templates/welcome. Inside that folder, create home.html:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>Hello, Welcome to School of Computer Science at NWC</h1>
+</body>
+</html>
+4. Update urls.py in the school project
+In school/urls.py:
+
+python
+Copy
+Edit
+from django.contrib import admin
+from django.urls import path
+from welcome import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+]
+5. Register the App in settings.py
+In school/settings.py, add 'welcome' to the INSTALLED_APPS list.
+
+6. Run the Server
+bash
+Copy
+Edit
+python manage.py runserver
+7. View the Result
+Visit http://localhost:8000 to see the message displayed.
+
+If you’d like additional features or styling tips, let me know! 🚀
