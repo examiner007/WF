@@ -1,0 +1,65 @@
+// delete_customer.js (Node.js file to select all customers and delete a specified record)
+
+const { MongoClient, ObjectId } = require('mongodb');
+
+// Connection URI (replace with your MongoDB connection string)
+const uri = "mongodb://localhost:27017/your_database_name"; // Replace with your MongoDB connection details
+
+// Create a new MongoClient
+const client = new MongoClient(uri);
+
+async function main() {
+  try {
+    // Connect the client to the server
+    await client.connect();
+    console.log("Connected successfully to MongoDB");
+
+    // Access the database
+    const db = client.db();
+
+    // Access the collection
+    const collection = db.collection('customers'); // Replace 'customers' with your collection name
+
+    // --- Part 1: Select all records ---
+    console.log('\n--- Current Customers ---');
+    const allCustomers = await collection.find({}).toArray();
+    console.log(allCustomers);
+
+    // --- Part 2: Delete a specified record ---
+    // Specify the ID of the customer to delete
+    const customerIdToDelete = 'your_customer_id'; // Replace with the actual _id of the customer you want to delete
+
+    if (!customerIdToDelete || customerIdToDelete === 'your_customer_id') {
+      console.warn('\nWARNING: Please replace "your_customer_id" with the actual ObjectId of the customer you want to delete.');
+      return;
+    }
+
+    try {
+      const deleteResult = await collection.deleteOne({ _id: new ObjectId(customerIdToDelete) });
+
+      if (deleteResult.deletedCount === 1) {
+        console.log(`\nSuccessfully deleted customer with ID: ${customerIdToDelete}`);
+      } else {
+        console.log(`\nNo customer found with ID: ${customerIdToDelete}`);
+      }
+
+      // --- Optional: Display the remaining customers after deletion ---
+      console.log('\n--- Customers After Deletion ---');
+      const remainingCustomers = await collection.find({}).toArray();
+      console.log(remainingCustomers);
+
+    } catch (error) {
+      console.error('\nError deleting customer:', error);
+      console.error('Make sure the ID is a valid ObjectId.');
+    }
+
+  } catch (error) {
+    console.error('Error connecting or querying MongoDB:', error);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+    console.log('Disconnected from MongoDB');
+  }
+}
+
+main().catch(console.error);
