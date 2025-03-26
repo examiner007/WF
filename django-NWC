@@ -1,0 +1,36 @@
+//welcome.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to NWC</title>
+</head>
+<body>
+    <h1>Hello, Welcome to School of Computer Science at NWC</h1>
+</body>
+</html>
+
+  # your_project_name/your_app_name/views.py
+from django.shortcuts import render
+
+def welcome_message(request):
+    return render(request, 'welcome.html')
+
+  # your_project_name/your_app_name/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.welcome_message, name='welcome'),
+]
+
+  # your_project_name/your_project_name/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('your_app_name.urls')),  # Include the app's URLs
+]
+
+  ...run.....
