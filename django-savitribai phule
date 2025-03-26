@@ -1,0 +1,81 @@
+INSTALLED_APPS = [
+    # ... other apps
+    'pages',  # Add your app here
+]
+  #base.html
+  <!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Indira College{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Indira College of Commerce and Science</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Indira College of Commerce and Science, Pune</p>
+    </footer>
+</body>
+</html>
+
+          #home.html
+          {% extends 'pages/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2>Welcome to Indira College of Commerce and Science Pune!</h2>
+    <p>This is the homepage of our esteemed institution.</p>
+{% endblock %}
+
+
+           #about.html
+             {% extends 'pages/base.html' %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <h2>About Us</h2>
+    <p>An Autonomous College under Savitribai Phule Pune University</p>
+{% endblock %}
+
+# icc_app/pages/views.py
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'pages/home.html')
+
+def about(request):
+    return render(request, 'pages/about.html')
+
+      # icc_app/pages/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+]
+
+      # icc_app/icc_app/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('pages.urls')),  # Include the app's URLs
+]
+
+  .....run.....
